@@ -19,7 +19,7 @@ module "kubernetes" {
   nodes_min_size = 1
   private_subnet01_netnum = "1"
   public_subnet01_netnum = "2"
-  region = "eu-west-2"
+  region = "us-east-1"
   vpc_cidr_block = "10.240.0.0/16"
   worker_instance_type = "t3.medium"
   vpc_name = "kubernetes"
