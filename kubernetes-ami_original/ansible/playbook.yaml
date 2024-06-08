@@ -1,0 +1,58 @@
+- name: "Provision a k8s image"
+  hosts: default
+  become: true
+
+  tasks:
+  # Kubernetes components
+  ## Docker
+  - apt:
+     name: ['apt-transport-https', 'ca-certificates', 'curl', 'gnupg-agent', 'software-properties-common']
+     update_cache: yes
+  - apt_key:
+     url: https://download.docker.com/linux/ubuntu/gpg
+     state: present
+  - apt_repository:
+     repo: "deb [arch=amd64] https://download.docker.com/linux/ubuntu focal stable"
+     state: present
+  - apt:
+      name: ["docker-ce", "docker-ce-cli", "containerd.io"]
+      state: present
+      update_cache: yes
+  - name: Enable the Docker service and ensure that it starts with system boot
+    systemd:
+      name: docker
+      enabled: yes
+      state: started
+  - name: Add the Kubernetes repository key
+    apt_key:
+      url: https://packages.cloud.google.com/apt/doc/apt-key.gpg
+      state: present
+  - name: Add the Kubernetes repository
+    apt_repository:
+      repo: "deb https://apt.kubernetes.io/ kubernetes-xenial main"
+      state: present
+  - name: Install the components
+    apt:
+      name: ["kubelet","kubeadm","kubectl"]
+      update_cache: yes
+
+  - name: Configure kubelet to use cgroupfs
+    ansible.builtin.lineinfile:
+      path: /etc/default/kubelet
+      line: 'KUBELET_EXTRA_ARGS="--cgroup-driver=cgroupfs"'
+      create: yes
+
+   # Preparing the instance for Kubernetes
+  - name: "adding sysctl net.ipv4.ip_forward"
+    sysctl:
+      name: net.ipv4.ip_forward
+      value: '1'
+      state: present
+      reload: yes
+
+  - name: "adding sysctl net.bridge.bridge-nf-call-iptables"
+    sysctl:
+      name: net.bridge.bridge-nf-call-iptables
+      value: '1'
+      state: present
+      reload: yes
