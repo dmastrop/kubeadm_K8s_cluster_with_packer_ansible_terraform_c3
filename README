@@ -26,7 +26,7 @@ networking:
   podSubnet: 192.168.0.0/16
   serviceSubnet: 10.96.0.0/12
 
-# Pakcer node.pkr.hcl to create the AWS AMI image in accordance with the playbook.yaml ansible file below
+# Packer node.pkr.hcl to create the AWS AMI image in accordance with the playbook.yaml ansible file below
 # NOTE that bash scripts can be used instead of Ansible and also Puppet or Chef are alternatives as well
 # The source image is ubuntu 20.04
 
@@ -188,17 +188,32 @@ selects the latest version of Kubernetes.
 
 This is done on the ansible packer controller EC2 instance
 The folder structure for the terraform is in the Resources_terraform directory
+This is under the /home/ubuntu/course3_kubeadm/source_repository_kubeadm_course3 which is pulled from the remote
+git repository
 
-ubuntu@ip-172-31-31-120:~/course3_kubeadm$ mkdir Resources_terraform
-ubuntu@ip-172-31-31-120:~/course3_kubeadm$ ls -la
-total 16
-drwxrwxr-x  4 ubuntu ubuntu 4096 Jun  7 23:41 .
-drwxr-x--- 16 ubuntu ubuntu 4096 Jun  7 22:35 ..
-drwxrwxr-x  2 ubuntu ubuntu 4096 Jun  7 23:41 Resources_terraform
-drwxrwxr-x  3 ubuntu ubuntu 4096 Jun  7 21:39 kubernetes-ami
+ubuntu@ip-172-31-31-120:~/course3_kubeadm/source_repository_kubeadm_course3$ ls -la
+total 48
+drwxrwxr-x 6 ubuntu ubuntu 4096 Jun  8 00:48 .
+drwxrwxr-x 4 ubuntu ubuntu 4096 Jun  8 01:37 ..
+-rw-rw-r-- 1 ubuntu ubuntu 6148 Jun  8 00:48 .DS_Store
+drwxrwxr-x 8 ubuntu ubuntu 4096 Jun  8 01:36 .git
+-rw-rw-r-- 1 ubuntu ubuntu  735 Jun  8 00:48 .gitignore
+-rw-rw-r-- 1 ubuntu ubuntu 7325 Jun  8 00:48 README
+drwxrwxr-x 3 ubuntu ubuntu 4096 Jun  8 00:48 Resources_terraform <<<<<<<<
+drwxrwxr-x 3 ubuntu ubuntu 4096 Jun  8 00:48 kubernetes-ami
+drwxrwxr-x 3 ubuntu ubuntu 4096 Jun  8 00:48 kubernetes-ami_original
+-rw-rw-r-- 1 ubuntu ubuntu 1207 Jun  8 00:48 kubernetes-ami_original.tar.gz
 
 In the Resources_terraform directory there is the kubeadm.config file which will be used to administer the cluster from
 the master node (see below)
+
+ubuntu@ip-172-31-31-120:~/course3_kubeadm/source_repository_kubeadm_course3/Resources_terraform$ ls -la
+total 24
+drwxrwxr-x 3 ubuntu ubuntu 4096 Jun  8 00:48 .
+drwxrwxr-x 6 ubuntu ubuntu 4096 Jun  8 00:48 ..
+-rw-rw-r-- 1 ubuntu ubuntu 6148 Jun  8 00:48 .DS_Store
+-rw-rw-r-- 1 ubuntu ubuntu  583 Jun  8 00:48 kubeadm.config  <<<<<<<<
+drwxrwxr-x 3 ubuntu ubuntu 4096 Jun  8 01:36 terraform_kubeadm
 
 In the Resources_terraform directory there is a folder called terraform_kubeadm that has the terraform main.tf and kubernetes folder
 with the rest of the terraform module files
